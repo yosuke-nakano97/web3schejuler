@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- saved from url=(0029)https://schedule.v-react.com/ -->
+<html lang="jp">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{{ url_for('schejule.static', filename='index.css')}}" rel="stylesheet" />
+    <link href="{{ url_for('schejule.static', filename='chunk-vendors.css')}}" rel="stylesheet" />
+    <meta name="theme-color" content="#4DBA87">
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="fb_vue_template">
+</head>
+<!-- kokomade ok -->
+
+<body>
+    <noscript><strong>Schejule</strong></noscript>
+    <div class="appTop">
+        <header class="v-sheet theme--dark v-toolbar v-app-bar v-app-bar--clipped v-app-bar--fixed black"
+            data-booted="true"
+            style="height: 64px; margin-top: 0px; transform: translateY(0px); left: 0px; right: 0px;">
+            <div class="v-toolbar__content" style="height: 64px;">
+                <div class="mfont">
+                    <a href="{{ url_for('schejule.index') }}" class="mfont v-btn v-btn--flat v-btn--text theme--dark v-size--default"
+                    style="text-decoration: none; color: inherit;">
+                    Vyome Schejule
+                    </a>
+                </div>
+                <!-- <div class="spacer"></div> -->
+                <div class="search-form">
+                    <form method="POST" action="{{ url_for('schejule.channel_register') }}">
+                        {{ form.csrf_token }}
+                        <input type="text" name="channel_url" placeholder="https://www.youtube.com/">
+                        <button type="submit">
+                            <i class="fa-search">登録</i>
+                        </button>
+                    </form>
+                </div>
+                <div class="delete-button" style="margin-left: auto;">
+                    <a href="{{ url_for('schejule.select_channel') }}" class="mfont v-btn v-btn--flat v-btn--text theme--dark v-size--default"
+                        style="text-decoration: none; color: inherit;">
+                        チャンネル一覧
+                    </a>
+                </div>
+            </div>
+        </header>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                alert("{{ messages[0] }}");
+            </script>
+        {% endif %}
+    {% endwith %}
+        <!-- header に　登録ボタン追加-->
+        <div class="headerSpace"></div>
+        <div data-app="true" class="v-application v-application--is-ltr theme--light" id="app">
+            <div class="v-application--wrap"><!----><!---->
+                <main class="v-main zoom" data-booted="true" style="padding: 64px 0px 0px;">
+                    <div class="v-main__wrap">
+                        {%block content%}{%endblock%}
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

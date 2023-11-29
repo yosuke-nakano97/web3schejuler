@@ -1,0 +1,53 @@
+{% extends 'schejule/base.html' %}
+
+{% block title %}select{% endblock %}
+
+{% block content%}
+<div class="channels-container">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        td{
+            color:rgb(242,242,242);
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+    </style>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Channel ID</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for channel in channels %}
+                <tr>
+                    <td>{{ channel.name }}</td>
+                    <td>{{ channel.id }}</td>
+                    <td><a href="{{ url_for('schejule.delete_channel', channel_id=channel.id) }}">削除</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock%}

@@ -1,0 +1,70 @@
+{% extends 'schejule/base.html' %}
+
+{% block title %}schedule{% endblock %}
+
+{% block content%}
+<div>
+    <!-- 毎日分追加してく -->
+    {% for date, info in stream_group.items() %}
+    <div>
+        <div class="space"></div>
+        <div class="baseArea">
+            <div class="scheduleTimeArea">
+                <div id="23" class="dateText sticky"
+                    style="background: {{info['weekday'][1]}}; color: black;">
+                    <h5>{{date}}({{info["weekday"][0]}})</h5>
+                </div>
+            </div>
+            <div class="line" style="background: rgb(255, 189, 189);"></div>
+            <div class="scheduleItemArea">
+                <div class="row lighten-">
+                    <!-- stream1つづ -->
+                    {% for entry in info["streams"] %}
+                    <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 col-12">
+                        <div id="notlive" ontouchstart="" class="item"
+                            style="background-color: white;">
+                            <div class="item__scheduledStartTime">
+                                <span style="background-color: rgb(66, 64, 62); color: white;">
+                                    <b>{{entry.Stream.starttime.strftime('%H:%M')}}</b>
+                                </span>
+                            </div>
+                            <div class="item__appearances">
+                                <div>
+                                    <a href="https://www.youtube.com/channel/{{entry.Stream.channel_id}}"
+                                        target="_blank">
+                                        <img src="{{entry.Channel.icon_path}}" width="44px"
+                                            height="44px" alt="{{entry.Channel.name}}"
+                                            class="appearancesIcon has-tooltip"
+                                            data-original-title="null">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="item__channelName text" style="color: black;">
+                                {{entry.Channel.name}}</div>
+                            <div class="item__title text" style="color: black;">
+                                <span>
+                                    <b>{{entry.Stream.title}}</b>
+                                </span>
+                            </div>
+                            <div class="item__thumbnail">
+                                <a href="https://youtube.com/watch?v={{entry.Stream.id}}"
+                                    target="_blank">
+                                    <img src="{{entry.Stream.thumbnail_path}}"
+                                        class="thumbnail_img">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="rightSideSpace"></div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<form method="POST" action="{{ url_for('schejule.stream_update') }}">
+    {{ form.csrf_token }}
+    {{ form.submit() }}
+</form>
+{% endblock %}
