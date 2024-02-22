@@ -1,9 +1,9 @@
-from flask import Blueprint, redirect, render_template, url_for, request, flash
+from flask import Blueprint, redirect, render_template, url_for, flash
 from datetime import datetime
+from sqlalchemy.orm import sessionmaker
 from apps.schejule.forms import RegisterForm
-from apps.schejule.models import  Channel, Stream
+from apps.schejule.models import  Channel, Stream, sche_engine
 import apps.schejule.dbmanage as dbmanage
-from apps.app import db
 from apps.app import youtubeinfo
 
 schejule = Blueprint(
@@ -15,13 +15,18 @@ schejule = Blueprint(
 
 @schejule.route("/")
 def index():
-    streams = (
-        db.session.query(Channel, Stream)
-        .join(Stream)
-        .order_by(Stream.starttime.asc())
-        .all()
-    )
-    db.session.close()
+    try:
+        Session = sessionmaker(bind=sche_engine)
+        session = Session()
+        streams = (
+            session.query(Channel, Stream)
+            .join(Stream)
+            .order_by(Stream.starttime.asc())
+            .all()
+        )
+        session.close()
+    except Exception as e:
+        pass
 
     stream_group = {}
     week_info = {
@@ -68,7 +73,9 @@ def stream_update():
 
 @schejule.route("/select")
 def select_channel():
-    channels = db.session.query(Channel).all()
+    Session = sessionmaker(bind=sche_engine)
+    session = Session()
+    channels = session.query(Channel).all()
     form = RegisterForm()
 
     return render_template(
