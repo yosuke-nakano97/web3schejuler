@@ -1,0 +1,34 @@
+{% extends 'vken/base.html' %}
+
+{% block title %}vken{% endblock %}
+{% block content%}
+<body>
+    <h2>Vken Test Site</h2>
+    <h3>トウシロが作ってるからガバガバです。欠陥があったらV嫁まで</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>ID</th>
+                <th>Month Use</th>
+                <th>Year Use</th>
+                <th>Total Use</th>
+                <th>詳細</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in records %}
+            {% set rank = loop.index %}
+                <tr>
+                    <td>{{rank}}</td>
+                    <td>{{record.id}}</td>
+                    <td>{{record.month_use}}</td>
+                    <td>{{record.year_use}}</td>
+                    <td>{{record.total_use}}</td>
+                    <td><a href="/vken/detail/{{record.id}}">削除</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endblock %}
